@@ -1,7 +1,7 @@
 // app/index.tsx
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
-import { Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Image, TextInput, TouchableOpacity, View } from 'react-native';
 import { ThemedText, ThemedView } from '../components/Themed';
 
 export default function LoginScreen() {
@@ -16,17 +16,18 @@ export default function LoginScreen() {
       router.replace('/(tabs)');
     }, 800);
   };
-  
 
   return (
     <ThemedView style={styles.container}>
-      {/* Logo */}
+      {/* Logo with GIF */}
       <View style={styles.logoContainer}>
-        <View style={styles.targetIcon}>
-          <Text style={{ fontSize: 70, color: '#fff' }}>🎯</Text>
-        </View>
+        <Image 
+          source={require('../../assets/logo.png')} 
+          style={styles.logoGif}
+          resizeMode="contain"
+        />
         <ThemedText type="title" style={styles.logoText}>
-          M5Stack S3
+          StackUp
         </ThemedText>
       </View>
 
@@ -88,13 +89,9 @@ const styles = {
     alignItems: 'center',
     marginBottom: 60,
   },
-  targetIcon: {
-    width: 110,
-    height: 110,
-    borderRadius: 55,
-    backgroundColor: '#4CAF50',
-    justifyContent: 'center',
-    alignItems: 'center',
+  logoGif: {
+    width: 140,
+    height: 140,
     marginBottom: 16,
   },
   logoText: {
@@ -121,7 +118,7 @@ const styles = {
     marginTop: -8,
   },
   loginButton: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#da7305',
     borderRadius: 16,
     padding: 18,
     alignItems: 'center',

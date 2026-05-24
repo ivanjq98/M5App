@@ -1,11 +1,9 @@
 // app/(tabs)/_layout.tsx
 import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
-import { SafeAreaView } from 'react-native';
 
 export default function TabLayout() {
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#0F0F0F' }}>
       <Tabs
         screenOptions={{
           tabBarActiveTintColor: '#4CAF50',
@@ -56,6 +54,5 @@ export default function TabLayout() {
           }} 
         />
       </Tabs>
-    </SafeAreaView>
   );
 }

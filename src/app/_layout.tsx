@@ -1,6 +1,7 @@
+// app/_layout.tsx
 import { Stack } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { Image } from 'react-native';
 import { BLEProvider } from '../components/BLEContext';
 import { ThemedText, ThemedView } from '../components/Themed';
 import { ThemeProvider, useTheme } from '../components/ThemeProvider';
@@ -24,30 +25,32 @@ export default function RootLayout() {
   );
 }
 
-// Loading Screen
 function LoadingScreen() {
   const { themeColors } = useTheme();
 
   return (
-    <ThemedView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <View style={{
-        width: 130,
-        height: 130,
-        borderRadius: 65,
-        backgroundColor: themeColors.primary,
-        marginBottom: 32,
-      }} />
-      <ThemedText type="title" style={{ fontSize: 48, fontWeight: '900' }}>
-        M5Stack S3
-      </ThemedText>
-      <ThemedText style={{ marginTop: 8, color: themeColors.textSecondary }}>
+    <ThemedView style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
+      
+      {/* GIF Logo */}
+      <Image 
+        source={require('../../assets/logo.gif')} 
+        style={styles.logoGif}
+        resizeMode="contain"
+      />
+      
+      <ThemedText 
+        type="small" 
+        style={{ 
+          color: themeColors.textSecondary, 
+          marginTop: 8 
+        }}
+      >
         Connecting to your world
       </ThemedText>
     </ThemedView>
   );
 }
 
-// Main Navigation
 function AppNavigator() {
   return (
     <Stack screenOptions={{ headerShown: false }}>
@@ -56,3 +59,14 @@ function AppNavigator() {
     </Stack>
   );
 }
+
+const styles = {
+  container: { 
+    flex: 1 
+  },
+  logoGif: {
+    width: 160,
+    height: 160,
+    marginBottom: 20,
+  },
+};

@@ -22,7 +22,8 @@ const projects = [
     title: "Set Alarm", 
     subtitle: "Timer & Alarm System", 
     icon: "⏰", 
-    color: "#FFD93D" 
+    color: "#FFD93D",
+    screen: "/set-alarm"     
   },
   { 
     title: "Tetris Game", 
