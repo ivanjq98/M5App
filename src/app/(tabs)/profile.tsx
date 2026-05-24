@@ -8,176 +8,184 @@ import { useTheme } from '../../components/ThemeProvider';
 export default function ProfileScreen() {
   const { themeColors, isDark, toggleTheme } = useTheme();
   
-  const [name, setName] = useState('John Doe');
+  const [profile, setProfile] = useState({
+    name: "John Doe",
+    email: "johndoe@gmail.com",
+    bio: "M5Stack S3 enthusiast & IoT developer",
+  });
+
   const [isEditing, setIsEditing] = useState(false);
-  const [tempName, setTempName] = useState(name);
+  const [tempProfile, setTempProfile] = useState(profile);
 
-  const saveName = () => {
-    if (tempName.trim().length > 0) {
-      setName(tempName);
-      setIsEditing(false);
-      Alert.alert('Success', 'Name updated successfully!');
-    } else {
-      Alert.alert('Error', 'Name cannot be empty');
+  const saveProfile = () => {
+    if (!tempProfile.name.trim() || !tempProfile.email.trim()) {
+      Alert.alert("Error", "Name and Email cannot be empty");
+      return;
     }
-  };
-
-  const handleLogout = () => {
-    Alert.alert(
-      'Logout',
-      'Are you sure you want to logout?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        { 
-          text: 'Logout', 
-          style: 'destructive',
-          onPress: () => {
-            Alert.alert('Logged Out', 'You have been logged out successfully.');
-            // You can add navigation back to login here later
-          }
-        },
-      ]
-    );
+    setProfile(tempProfile);
+    setIsEditing(false);
+    Alert.alert("✅ Success", "Profile updated successfully!");
   };
 
   const openM5Website = () => {
     Linking.openURL('https://m5stack.com');
   };
 
+  const handleLogout = () => {
+    Alert.alert(
+      'Logout',
+      'Are you sure you want to log out?',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { 
+          text: 'Logout', 
+          style: 'destructive',
+          onPress: () => Alert.alert('Logged Out', 'You have been logged out.')
+        },
+      ]
+    );
+  };
+
   return (
     <ThemedView style={{ flex: 1, padding: 16, paddingTop: 60 }}>
-      <ThemedText type="title" style={{ fontSize: 32, marginBottom: 40 }}>
-        Profile
+      <ThemedText type="title" style={{ fontSize: 32, marginBottom: 30 }}>
+        My Profile
       </ThemedText>
 
       {/* Avatar */}
-      <View style={{ alignItems: 'center', marginBottom: 40 }}>
+      <View style={{ alignItems: 'center', marginBottom: 30 }}>
         <View style={{ 
-          width: 110, 
-          height: 110, 
-          borderRadius: 55, 
+          width: 120, 
+          height: 120, 
+          borderRadius: 60, 
           backgroundColor: themeColors.primary,
           justifyContent: 'center',
-          alignItems: 'center'
+          alignItems: 'center',
+          borderWidth: 4,
+          borderColor: isDark ? '#333' : '#fff'
         }}>
-          <ThemedText style={{ fontSize: 50 }}>👤</ThemedText>
+          <ThemedText style={{ fontSize: 55 }}>👤</ThemedText>
         </View>
+        <TouchableOpacity style={{ marginTop: 8 }}>
+          <ThemedText style={{ color: '#4CAF50', fontWeight: '600' }}>Change Avatar</ThemedText>
+        </TouchableOpacity>
       </View>
 
-      {/* Name Section */}
-      <View style={{ marginBottom: 24 }}>
-        <ThemedText style={{ fontSize: 16, marginBottom: 8, fontWeight: '600' }}>
-          Display Name
-        </ThemedText>
+      {/* Editable Fields */}
+      <View style={{ gap: 20 }}>
         
-        <View style={{ 
-          flexDirection: 'row', 
-          backgroundColor: themeColors.card, 
-          borderRadius: 12, 
-          alignItems: 'center',
-          paddingHorizontal: 16
-        }}>
-          <TextInput
-            style={{
-              flex: 1,
-              color: themeColors.text,
-              fontSize: 18,
-              paddingVertical: 14,
-            }}
-            value={isEditing ? tempName : name}
-            onChangeText={isEditing ? setTempName : undefined}
-            editable={isEditing}
-            placeholder="Enter your name"
-            placeholderTextColor="#888"
-          />
+        <View>
+          <ThemedText style={{ fontWeight: '600', marginBottom: 8 }}>Display Name</ThemedText>
+          <View style={{ backgroundColor: themeColors.card, borderRadius: 12, paddingHorizontal: 16 }}>
+            <TextInput
+              style={{ color: themeColors.text, fontSize: 18, paddingVertical: 14 }}
+              value={isEditing ? tempProfile.name : profile.name}
+              onChangeText={(text) => setTempProfile(prev => ({...prev, name: text}))}
+              editable={isEditing}
+              placeholder="Your name"
+            />
+          </View>
+        </View>
 
-          <TouchableOpacity onPress={() => {
-            if (isEditing) {
-              saveName();
-            } else {
-              setTempName(name);
-              setIsEditing(true);
-            }
-          }}>
-            <ThemedText style={{ color: '#4CAF50', fontWeight: '600' }}>
-              {isEditing ? 'Save' : 'Edit'}
-            </ThemedText>
-          </TouchableOpacity>
+        <View>
+          <ThemedText style={{ fontWeight: '600', marginBottom: 8 }}>Email</ThemedText>
+          <View style={{ backgroundColor: themeColors.card, borderRadius: 12, paddingHorizontal: 16 }}>
+            <TextInput
+              style={{ color: themeColors.text, fontSize: 18, paddingVertical: 14 }}
+              value={isEditing ? tempProfile.email : profile.email}
+              onChangeText={(text) => setTempProfile(prev => ({...prev, email: text}))}
+              editable={isEditing}
+              keyboardType="email-address"
+              autoCapitalize="none"
+            />
+          </View>
+        </View>
+
+        <View>
+          <ThemedText style={{ fontWeight: '600', marginBottom: 8 }}>Bio</ThemedText>
+          <View style={{ backgroundColor: themeColors.card, borderRadius: 12, paddingHorizontal: 16 }}>
+            <TextInput
+              style={{ color: themeColors.text, fontSize: 16, paddingVertical: 14, minHeight: 80 }}
+              value={isEditing ? tempProfile.bio : profile.bio}
+              onChangeText={(text) => setTempProfile(prev => ({...prev, bio: text}))}
+              editable={isEditing}
+              multiline
+              placeholder="Tell us about yourself..."
+            />
+          </View>
         </View>
       </View>
 
-      {/* Email */}
-      <View style={{ marginBottom: 32 }}>
-        <ThemedText style={{ fontSize: 16, marginBottom: 8, fontWeight: '600' }}>
-          Email
-        </ThemedText>
-        <View style={{ 
-          backgroundColor: themeColors.card, 
-          padding: 16, 
-          borderRadius: 12 
-        }}>
-          <ThemedText style={{ fontSize: 16 }}>johndoe@gmail.com</ThemedText>
-        </View>
+      {/* Action Buttons */}
+      <View style={{ marginTop: 40, gap: 12 }}>
+        
+        <TouchableOpacity 
+          onPress={() => isEditing ? saveProfile() : setIsEditing(true)}
+          style={{
+            backgroundColor: isEditing ? '#4CAF50' : themeColors.card,
+            padding: 16,
+            borderRadius: 16,
+            alignItems: 'center'
+          }}
+        >
+          <ThemedText style={{ fontWeight: '700', fontSize: 18, color: isEditing ? '#fff' : themeColors.text }}>
+            {isEditing ? '💾 Save Changes' : '✏️ Edit Profile'}
+          </ThemedText>
+        </TouchableOpacity>
+
+        {/* Theme Toggle */}
+        <TouchableOpacity 
+          onPress={toggleTheme}
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: themeColors.card,
+            padding: 18,
+            borderRadius: 16,
+          }}
+        >
+          <Ionicons name={isDark ? "sunny-outline" : "moon-outline"} size={26} color={themeColors.text} />
+          <ThemedText style={{ marginLeft: 16, fontSize: 18, flex: 1 }}>
+            {isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+          </ThemedText>
+        </TouchableOpacity>
+
+        {/* M5Stack Website */}
+        <TouchableOpacity 
+          onPress={openM5Website}
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: themeColors.card,
+            padding: 18,
+            borderRadius: 16,
+          }}
+        >
+          <Ionicons name="help-circle-outline" size={26} color={themeColors.text} />
+          <ThemedText style={{ marginLeft: 16, fontSize: 18, flex: 1 }}>
+            M5Stack Official Website
+          </ThemedText>
+          <Ionicons name="open-outline" size={20} color={themeColors.textSecondary} />
+        </TouchableOpacity>
+
+        {/* Logout */}
+        <TouchableOpacity 
+          onPress={handleLogout}
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: '#FF3B30',
+            padding: 18,
+            borderRadius: 16,
+            marginTop: 10
+          }}
+        >
+          <Ionicons name="log-out-outline" size={26} color="#fff" />
+          <ThemedText style={{ marginLeft: 16, fontSize: 18, color: '#fff', fontWeight: '600' }}>
+            Logout
+          </ThemedText>
+        </TouchableOpacity>
       </View>
-
-      {/* Theme Toggle */}
-      <TouchableOpacity 
-        onPress={toggleTheme}
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          backgroundColor: themeColors.card,
-          padding: 18,
-          borderRadius: 16,
-          marginBottom: 12
-        }}
-      >
-        <Ionicons 
-          name={isDark ? "sunny-outline" : "moon-outline"} 
-          size={26} 
-          color={themeColors.text} 
-        />
-        <ThemedText style={{ marginLeft: 16, fontSize: 18, flex: 1 }}>
-          {isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-        </ThemedText>
-      </TouchableOpacity>
-
-      {/* Help / M5Stack Website */}
-      <TouchableOpacity 
-        onPress={openM5Website}
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          backgroundColor: themeColors.card,
-          padding: 18,
-          borderRadius: 16,
-          marginBottom: 12
-        }}
-      >
-        <Ionicons name="help-circle-outline" size={26} color={themeColors.text} />
-        <ThemedText style={{ marginLeft: 16, fontSize: 18, flex: 1 }}>
-          Help & M5Stack Official Site
-        </ThemedText>
-        <Ionicons name="open-outline" size={20} color={themeColors.textSecondary} />
-      </TouchableOpacity>
-
-      {/* Logout */}
-      <TouchableOpacity 
-        onPress={handleLogout}
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          backgroundColor: '#FF3B30',
-          padding: 18,
-          borderRadius: 16,
-          marginTop: 20
-        }}
-      >
-        <Ionicons name="log-out-outline" size={26} color="#fff" />
-        <ThemedText style={{ marginLeft: 16, fontSize: 18, color: '#fff', fontWeight: '600' }}>
-          Logout
-        </ThemedText>
-      </TouchableOpacity>
     </ThemedView>
   );
 }

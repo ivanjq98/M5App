@@ -14,8 +14,9 @@ export default function LoginScreen() {
     setLoading(true);
     setTimeout(() => {
       router.replace('/(tabs)');
-    }, 700);
+    }, 800);
   };
+  
 
   return (
     <ThemedView style={styles.container}>
@@ -25,7 +26,7 @@ export default function LoginScreen() {
           <Text style={{ fontSize: 70, color: '#fff' }}>🎯</Text>
         </View>
         <ThemedText type="title" style={styles.logoText}>
-          M5Stack3
+          M5Stack S3
         </ThemedText>
       </View>
 
@@ -57,7 +58,7 @@ export default function LoginScreen() {
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={styles.loginButton}
+          style={[styles.loginButton, loading && { opacity: 0.7 }]}
           onPress={handleLogin}
           disabled={loading}
         >

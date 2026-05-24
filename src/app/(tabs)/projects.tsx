@@ -1,59 +1,56 @@
 // app/(tabs)/goals.tsx
-import { ScrollView, TouchableOpacity, View } from 'react-native';
+import { useRouter } from 'expo-router';
+import { Alert, ScrollView, TouchableOpacity, View } from 'react-native';
 import { ThemedText, ThemedView } from '../../components/Themed';
 import { useTheme } from '../../components/ThemeProvider';
 
 const projects = [
-  {
-    title: "Test Color",
-    subtitle: "RGB LED Control",
-    icon: "🎨",
+  { 
+    title: "Test Color", 
+    subtitle: "RGB LED & Display Effects", 
+    icon: "🎨", 
     color: "#FF6B6B",
-    status: "Ready"
+    screen: "/color-test" 
   },
-  {
-    title: "Microphone Testing",
-    subtitle: "Voice Input Test",
-    icon: "🎤",
-    color: "#4ECDC4",
-    status: "Ready"
+  { 
+    title: "Microphone Testing", 
+    subtitle: "Voice Input Test", 
+    icon: "🎤", 
+    color: "#4ECDC4" 
   },
-  {
-    title: "Set Alarm",
-    subtitle: "Timer & Alarm System",
-    icon: "⏰",
-    color: "#FFD93D",
-    status: "Ready"
+  { 
+    title: "Set Alarm", 
+    subtitle: "Timer & Alarm System", 
+    icon: "⏰", 
+    color: "#FFD93D" 
   },
-  {
-    title: "Tetris Game",
-    subtitle: "Classic Block Game",
-    icon: "🕹️",
-    color: "#8E5CFF",
-    status: "Ready"
+  { 
+    title: "Tetris Game", 
+    subtitle: "Classic Block Game", 
+    icon: "🕹️", 
+    color: "#8E5CFF" 
   },
-  {
-    title: "AI Chat Assistant",
-    subtitle: "Voice + LLM Chat",
-    icon: "🤖",
-    color: "#6BC1FF",
-    status: "Ready"
+  { 
+    title: "AI Chat Assistant", 
+    subtitle: "Voice + LLM Chat", 
+    icon: "🤖", 
+    color: "#6BC1FF" 
   },
-  {
-    title: "Water Plant System",
-    subtitle: "Auto Watering + Sensor",
-    icon: "🌱",
-    color: "#95E08E",
-    status: "Ready"
+  { 
+    title: "Water Plant System", 
+    subtitle: "Auto Watering + Sensor", 
+    icon: "🌱", 
+    color: "#95E08E" 
   },
 ];
 
 export default function ProjectsScreen() {
   const { themeColors } = useTheme();
+  const router = useRouter();
 
   return (
     <ThemedView style={{ flex: 1 }}>
-      <ScrollView contentContainerStyle={{ padding: 16, paddingTop: 60 }}>
+      <ScrollView contentContainerStyle={{ padding: 16, paddingTop: 40, paddingBottom: 100 }}>
         <ThemedText type="title" style={{ fontSize: 32, marginBottom: 8 }}>
           M5Stack Projects
         </ThemedText>
@@ -75,30 +72,16 @@ export default function ProjectsScreen() {
                 borderColor: project.color + '44',
               }}
               onPress={() => {
-                alert(`Launching: ${project.title}\n\nThis feature is under development.`);
-                // You can later navigate to specific screens here
+                if (project.screen) {
+                  router.push(project.screen);
+                } else {
+                  Alert.alert(project.title, "This project is coming soon!");
+                }
               }}
             >
               <ThemedText style={{ fontSize: 36, marginBottom: 12 }}>{project.icon}</ThemedText>
-              
-              <ThemedText style={{ fontWeight: '700', fontSize: 18, marginBottom: 4 }}>
-                {project.title}
-              </ThemedText>
-              
-              <ThemedText style={{ color: themeColors.textSecondary, marginBottom: 12 }}>
-                {project.subtitle}
-              </ThemedText>
-
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <View style={{ 
-                  backgroundColor: '#4CAF50', 
-                  paddingHorizontal: 10, 
-                  paddingVertical: 2, 
-                  borderRadius: 999 
-                }}>
-                  <ThemedText style={{ fontSize: 12, color: '#fff' }}>{project.status}</ThemedText>
-                </View>
-              </View>
+              <ThemedText style={{ fontWeight: '700', fontSize: 18 }}>{project.title}</ThemedText>
+              <ThemedText style={{ color: themeColors.textSecondary }}>{project.subtitle}</ThemedText>
             </TouchableOpacity>
           ))}
         </View>

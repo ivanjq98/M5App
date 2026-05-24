@@ -1,4 +1,3 @@
-// app/(tabs)/explore.tsx
 import { ThemedText, ThemedView } from '../../components/Themed';
 
 export default function ExploreScreen() {

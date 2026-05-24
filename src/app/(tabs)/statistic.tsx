@@ -1,4 +1,3 @@
-// app/(tabs)/progress.tsx
 import { Ionicons } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
 import { Dimensions, RefreshControl, ScrollView, TouchableOpacity, View } from 'react-native';

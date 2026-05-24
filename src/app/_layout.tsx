@@ -1,7 +1,7 @@
-// app/_layout.tsx
 import { Stack } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
+import { BLEProvider } from '../components/BLEContext';
 import { ThemedText, ThemedView } from '../components/Themed';
 import { ThemeProvider, useTheme } from '../components/ThemeProvider';
 
@@ -17,40 +17,37 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider>
-      {isInitializing ? <LoadingScreen /> : <AppNavigator />}
+      <BLEProvider>
+        {isInitializing ? <LoadingScreen /> : <AppNavigator />}
+      </BLEProvider>
     </ThemeProvider>
   );
 }
 
+// Loading Screen
 function LoadingScreen() {
   const { themeColors } = useTheme();
 
   return (
-    <ThemedView style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
-      <View style={[styles.splashOrb, { backgroundColor: themeColors.primary }]} />
-      <ThemedText 
-        type="title" 
-        style={{ 
-          color: themeColors.text, 
-          fontWeight: '900', 
-          fontSize: 42 
-        }}
-      >
+    <ThemedView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <View style={{
+        width: 130,
+        height: 130,
+        borderRadius: 65,
+        backgroundColor: themeColors.primary,
+        marginBottom: 32,
+      }} />
+      <ThemedText type="title" style={{ fontSize: 48, fontWeight: '900' }}>
         M5Stack S3
       </ThemedText>
-      <ThemedText 
-        type="small" 
-        style={{ 
-          color: themeColors.textSecondary, 
-          marginTop: 8 
-        }}
-      >
+      <ThemedText style={{ marginTop: 8, color: themeColors.textSecondary }}>
         Connecting to your world
       </ThemedText>
     </ThemedView>
   );
 }
 
+// Main Navigation
 function AppNavigator() {
   return (
     <Stack screenOptions={{ headerShown: false }}>
@@ -59,18 +56,3 @@ function AppNavigator() {
     </Stack>
   );
 }
-
-const styles = {
-  container: { flex: 1 },
-  splashOrb: {
-    width: 130,
-    height: 130,
-    borderRadius: 65,
-    marginBottom: 32,
-    shadowColor: '#4CAF50',
-    shadowOffset: { width: 0, height: 12 },
-    shadowOpacity: 0.5,
-    shadowRadius: 25,
-    elevation: 25,
-  },
-};
