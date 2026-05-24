@@ -1,14 +1,14 @@
 import {
-  Tabs,
   TabList,
-  TabTrigger,
-  TabSlot,
-  TabTriggerSlotProps,
   TabListProps,
+  Tabs,
+  TabSlot,
+  TabTrigger,
+  TabTriggerSlotProps,
 } from 'expo-router/ui';
 import { SymbolView } from 'expo-symbols';
 import React from 'react';
-import { Pressable, useColorScheme, View, StyleSheet } from 'react-native';
+import { Pressable, StyleSheet, useColorScheme, View } from 'react-native';
 
 import { ExternalLink } from './external-link';
 import { ThemedText } from './themed-text';
@@ -22,11 +22,13 @@ export default function AppTabs() {
       <TabSlot style={{ height: '100%' }} />
       <TabList asChild>
         <CustomTabList>
-          <TabTrigger name="home" href="/" asChild>
-            <TabButton>Home</TabButton>
+          {/* Changed name and href to match your Home Dashboard */}
+          <TabTrigger name="index" href="/" asChild>
+            <TabButton>Dashboard</TabButton>
           </TabTrigger>
-          <TabTrigger name="explore" href="/explore" asChild>
-            <TabButton>Explore</TabButton>
+          {/* Changed from 'explore' to 'analytics' or 'settings' depending on your file structure */}
+          <TabTrigger name="analytics" href="/analytics" asChild>
+            <TabButton>Analytics</TabButton>
           </TabTrigger>
         </CustomTabList>
       </TabList>
@@ -55,18 +57,20 @@ export function CustomTabList(props: TabListProps) {
   return (
     <View {...props} style={styles.tabListContainer}>
       <ThemedView type="backgroundElement" style={styles.innerContainer}>
+        {/* Updated branding text to match your Eco Water Plant System */}
         <ThemedText type="smallBold" style={styles.brandText}>
-          Expo Starter
+          🌱 Eco Water Plant System
         </ThemedText>
 
         {props.children}
 
+        {/* Updated external link to point to relevant documentation, e.g., Expo or your custom guide */}
         <ExternalLink href="https://docs.expo.dev" asChild>
           <Pressable style={styles.externalPressable}>
             <ThemedText type="link">Docs</ThemedText>
             <SymbolView
               tintColor={colors.text}
-              name={{ ios: 'arrow.up.right.square', web: 'link' }}
+              name={{ ios: 'doc.plaintext', web: 'link' }}
               size={12}
             />
           </Pressable>

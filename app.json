@@ -17,7 +17,8 @@
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.anonymous.M5App"
     },
     "web": {
       "output": "static",
@@ -25,6 +26,7 @@
     },
     "plugins": [
       "expo-router",
+      "react-native-ble-plx",
       [
         "expo-splash-screen",
         {
@@ -34,11 +36,19 @@
             "imageWidth": 76
           }
         }
-      ]
+      ],
+      "expo-sqlite",
+      "react-native-ble-plx"
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "70700a06-e88e-4fa3-a12f-891ffd7d9ae3"
+      }
     }
   }
 }

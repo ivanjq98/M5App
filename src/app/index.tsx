@@ -1,98 +1,138 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+// app/index.tsx
+import { useRouter } from 'expo-router';
+import { useState } from 'react';
+import { Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { ThemedText, ThemedView } from '../components/Themed';
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
+export default function LoginScreen() {
+  const router = useRouter();
+  const [email, setEmail] = useState('johndoe@gmail.com');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
-  return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
-}
+  const handleLogin = () => {
+    setLoading(true);
+    setTimeout(() => {
+      router.replace('/(tabs)');
+    }, 700);
+  };
 
-export default function HomeScreen() {
   return (
     <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
-
-        <ThemedText type="code" style={styles.code}>
-          get started
+      {/* Logo */}
+      <View style={styles.logoContainer}>
+        <View style={styles.targetIcon}>
+          <Text style={{ fontSize: 70, color: '#fff' }}>🎯</Text>
+        </View>
+        <ThemedText type="title" style={styles.logoText}>
+          M5Stack3
         </ThemedText>
+      </View>
 
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
+      {/* Login Form */}
+      <View style={styles.form}>
+        <ThemedText style={styles.label}>Email</ThemedText>
+        <TextInput
+          style={styles.input}
+          value={email}
+          onChangeText={setEmail}
+          placeholder="johndoe@gmail.com"
+          placeholderTextColor="#888"
+          keyboardType="email-address"
+          autoCapitalize="none"
+        />
 
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
+        <ThemedText style={styles.label}>Password</ThemedText>
+        <TextInput
+          style={styles.input}
+          value={password}
+          onChangeText={setPassword}
+          placeholder="••••••••"
+          placeholderTextColor="#888"
+          secureTextEntry
+        />
+
+        <TouchableOpacity style={styles.forgotPassword}>
+          <ThemedText style={{ color: '#888' }}>Forgot password?</ThemedText>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.loginButton}
+          onPress={handleLogin}
+          disabled={loading}
+        >
+          <ThemedText style={styles.loginButtonText}>
+            {loading ? 'Logging in...' : 'Log In'}
+          </ThemedText>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.createAccount}>
+          <ThemedText>
+            Don't have an account?{' '}
+            <ThemedText style={{ color: '#4CAF50' }}>Create an Account</ThemedText>
+          </ThemedText>
+        </TouchableOpacity>
+      </View>
     </ThemedView>
   );
 }
 
-const styles = StyleSheet.create({
+const styles = {
   container: {
     flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
+    padding: 24,
+    paddingTop: 100,
   },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: Spacing.four,
+  logoContainer: {
     alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
+    marginBottom: 60,
   },
-  heroSection: {
-    alignItems: 'center',
+  targetIcon: {
+    width: 110,
+    height: 110,
+    borderRadius: 55,
+    backgroundColor: '#4CAF50',
     justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
+    alignItems: 'center',
+    marginBottom: 16,
   },
-  title: {
-    textAlign: 'center',
+  logoText: {
+    fontSize: 42,
+    fontWeight: 'bold',
   },
-  code: {
-    textTransform: 'uppercase',
+  form: {
+    gap: 16,
   },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
+  label: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 6,
   },
-});
+  input: {
+    backgroundColor: '#1E1E1E',
+    borderRadius: 12,
+    padding: 16,
+    color: '#fff',
+    fontSize: 16,
+  },
+  forgotPassword: {
+    alignSelf: 'flex-end',
+    marginTop: -8,
+  },
+  loginButton: {
+    backgroundColor: '#4CAF50',
+    borderRadius: 16,
+    padding: 18,
+    alignItems: 'center',
+    marginTop: 24,
+  },
+  loginButtonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: '700',
+  },
+  createAccount: {
+    alignItems: 'center',
+    marginTop: 24,
+  },
+};
